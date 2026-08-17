@@ -28,6 +28,16 @@ export class ResultPageComponent {
     this.confirmed.set(true);
   }
 
+  protected onRestartClick(): void {
+    // Once the result is confirmed there's nothing left to warn about losing —
+    // the inspection is already submitted and acknowledged.
+    if (this.confirmed()) {
+      this.onRestartConfirmed();
+      return;
+    }
+    this.restartConfirmVisible.set(true);
+  }
+
   protected onRestartConfirmed(): void {
     this.facade.resetInspection();
     void this.router.navigate(['/']);
