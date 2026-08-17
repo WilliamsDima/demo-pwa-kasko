@@ -34,3 +34,20 @@
   object-fit: cover;
   display: block;
 }
+
+@media (orientation: landscape) {
+  :host {
+    left: 0;
+    right: auto;
+    bottom: 0;
+    top: 0;
+    padding-left: var(--safe-left);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+}

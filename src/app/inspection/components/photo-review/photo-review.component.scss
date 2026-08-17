@@ -50,3 +50,16 @@
 .action-confirm {
   background: var(--color-primary);
 }
+
+@media (orientation: landscape) {
+  .actions {
+    left: auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 28px calc(40px + var(--safe-right)) 28px 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+}

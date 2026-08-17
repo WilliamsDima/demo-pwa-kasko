@@ -111,13 +111,12 @@ export class CapturePageComponent {
   }
 
   protected async onShutter(): Promise<void> {
-    const stepConfig = this.facade.currentStepConfig();
     const cameraViewport = this.cameraViewportRef();
-    if (!stepConfig || !cameraViewport) {
+    if (!cameraViewport) {
       return;
     }
     try {
-      const draft = await this.cameraService.captureFrame(cameraViewport.videoElement(), stepConfig.guideAspectRatio);
+      const draft = await this.cameraService.captureFrame(cameraViewport.videoElement());
       this.facade.capturePhoto(draft);
     } catch {
       this.captureErrorVisible.set(true);

@@ -3,15 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { CameraAccessError } from '../models/camera.model';
 import { CapturedPhotoDraft } from '../models/capture-photo.model';
 
-const MAX_PHOTO_SIDE_PX = 1280;
-const JPEG_QUALITY = 0.85;
-
-interface CropRegion {
-  readonly sx: number;
-  readonly sy: number;
-  readonly sw: number;
-  readonly sh: number;
-}
+const MAX_PHOTO_SIDE_PX = 1920;
+const JPEG_QUALITY = 0.9;
 
 @Injectable({ providedIn: 'root' })
 export class CameraService {
@@ -62,48 +55,23 @@ export class CameraService {
     }
   }
 
-  async captureFrame(video: HTMLVideoElement, aspectRatio: number): Promise<CapturedPhotoDraft> {
-    const cropRegion = this.computeCropRegion(video.videoWidth, video.videoHeight, aspectRatio);
-    const scale = Math.min(1, MAX_PHOTO_SIDE_PX / Math.max(cropRegion.sw, cropRegion.sh));
+  async captureFrame(video: HTMLVideoElement): Promise<CapturedPhotoDraft> {
+    const scale = Math.min(1, MAX_PHOTO_SIDE_PX / Math.max(video.videoWidth, video.videoHeight));
 
     const canvas = document.createElement('canvas');
-    canvas.width = Math.round(cropRegion.sw * scale);
-    canvas.height = Math.round(cropRegion.sh * scale);
+    canvas.width = Math.round(video.videoWidth * scale);
+    canvas.height = Math.round(video.videoHeight * scale);
 
     const context = canvas.getContext('2d');
     if (!context) {
       throw new Error('Canvas 2D context is not available');
     }
 
-    context.drawImage(
-      video,
-      cropRegion.sx,
-      cropRegion.sy,
-      cropRegion.sw,
-      cropRegion.sh,
-      0,
-      0,
-      canvas.width,
-      canvas.height,
-    );
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const blob = await this.canvasToBlob(canvas);
     const dataUrl = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
     return { dataUrl, blob };
-  }
-
-  private computeCropRegion(videoWidth: number, videoHeight: number, aspectRatio: number): CropRegion {
-    const videoAspect = videoWidth / videoHeight;
-
-    if (videoAspect > aspectRatio) {
-      const sh = videoHeight;
-      const sw = sh * aspectRatio;
-      return { sx: (videoWidth - sw) / 2, sy: 0, sw, sh };
-    }
-
-    const sw = videoWidth;
-    const sh = sw / aspectRatio;
-    return { sx: 0, sy: (videoHeight - sh) / 2, sw, sh };
   }
 
   private canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
