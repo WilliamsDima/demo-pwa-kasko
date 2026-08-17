@@ -1,0 +1,9 @@
+<div class="wrap">
+  <button class="close-btn" type="button" (click)="close.emit()" aria-label="Закрыть">✕</button>
+  <div class="content">
+    <div class="icon">📷</div>
+    <h1 class="title">{{ title() }}</h1>
+    <p class="subtitle">{{ description() }}</p>
+  </div>
+  <button class="btn btn-primary" type="button" (click)="retry.emit()">Повторить попытку</button>
+</div>

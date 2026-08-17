@@ -1,0 +1,79 @@
+:host {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: calc(14px + var(--safe-top)) 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: auto;
+}
+
+.timer-low {
+  color: #ffb4ae;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.close-btn {
+  pointer-events: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.step-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.help-btn {
+  pointer-events: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: transparent;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}

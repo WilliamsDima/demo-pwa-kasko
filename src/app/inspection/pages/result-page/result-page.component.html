@@ -1,0 +1,59 @@
+<div class="page">
+  <div class="card">
+    <h1 class="title">Результат осмотра</h1>
+    <p class="subtitle">Подтвердите, чтобы продолжить оформление полиса</p>
+
+    @if (facade.vehicle(); as vehicle) {
+      <div class="deadline">Подтвердите результат до {{ vehicle.deadlineIso | date: 'dd.MM.yyyy' }}</div>
+
+      <div class="vehicle-row">
+        <span class="vehicle-icon">🚗</span>
+        <div>
+          <div class="vehicle-name">{{ vehicle.make }} {{ vehicle.model }}, {{ vehicle.year }}</div>
+          <div class="vehicle-plate">{{ vehicle.plate }}</div>
+        </div>
+      </div>
+    }
+
+    <p class="act-caption">Результат осмотра отражён в акте осмотра</p>
+    <button class="btn btn-secondary act-btn" type="button" (click)="downloadReport()">Акт осмотра ⬇</button>
+  </div>
+
+  @if (confirmed()) {
+    <div class="confirmed-banner">Спасибо! Результат осмотра подтверждён.</div>
+  }
+
+  <div class="bottom">
+    <label class="checkbox-row">
+      <input
+        type="checkbox"
+        [checked]="facade.reportAcknowledged()"
+        (change)="onAcknowledgedChange($event)"
+      />
+      <span>Ознакомлен с актом осмотра</span>
+    </label>
+    <button
+      class="btn btn-primary"
+      type="button"
+      [disabled]="!facade.reportAcknowledged() || confirmed()"
+      (click)="onConfirmResult()"
+    >
+      Подтвердить
+    </button>
+    <button class="btn btn-secondary" type="button" (click)="restartConfirmVisible.set(true)">
+      Начать осмотр заново
+    </button>
+  </div>
+</div>
+
+@if (restartConfirmVisible()) {
+  <app-confirm-action-modal
+    title="Текущий осмотр не сохранится"
+    description="Фото и результат осмотра будут удалены"
+    primaryLabel="Все равно начать осмотр заново"
+    secondaryLabel="Вернуться к текущему осмотру"
+    (primary)="onRestartConfirmed()"
+    (secondary)="restartConfirmVisible.set(false)"
+    (close)="restartConfirmVisible.set(false)"
+  />
+}

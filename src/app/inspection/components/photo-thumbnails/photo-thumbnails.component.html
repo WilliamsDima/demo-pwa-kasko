@@ -1,0 +1,9 @@
+<div class="row">
+  @for (photo of photos(); track $index) {
+    <div class="cell" [class.cell-filled]="photo">
+      @if (photo) {
+        <img [src]="photo.dataUrl" alt="" />
+      }
+    </div>
+  }
+</div>

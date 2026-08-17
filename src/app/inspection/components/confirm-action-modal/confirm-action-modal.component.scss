@@ -1,0 +1,56 @@
+:host {
+  display: contents;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: var(--color-surface-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--color-warning);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-danger {
+  background: var(--color-danger);
+}
+
+.title {
+  margin: 0 32px 8px;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.description {
+  margin: 0 0 22px;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

@@ -1,0 +1,32 @@
+:host {
+  display: contents;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: var(--color-surface-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.title {
+  margin: 4px 32px 8px 0;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.description {
+  margin: 0 0 20px;
+  color: var(--color-text-muted);
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+}

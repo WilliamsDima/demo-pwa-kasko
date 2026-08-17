@@ -1,0 +1,11 @@
+<div class="wrap">
+  <div class="content">
+    <div class="icon">✕</div>
+    <h1 class="title">Упс… Что-то пошло не так</h1>
+    <p class="subtitle">Вы можете сообщить о проблеме</p>
+  </div>
+  <div class="actions">
+    <button class="btn btn-primary" type="button" (click)="report.emit()">Сообщить о проблеме</button>
+    <button class="btn btn-secondary" type="button" (click)="restart.emit()">Начать осмотр заново</button>
+  </div>
+</div>

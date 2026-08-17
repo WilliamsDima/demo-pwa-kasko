@@ -1,0 +1,7 @@
+<div class="wrap">
+  <img class="photo" [src]="photoDataUrl()" alt="Сделанное фото" />
+  <div class="actions">
+    <button class="action-btn action-retake" type="button" (click)="retake.emit()" aria-label="Переснять">✕</button>
+    <button class="action-btn action-confirm" type="button" (click)="confirm.emit()" aria-label="Подтвердить">✓</button>
+  </div>
+</div>

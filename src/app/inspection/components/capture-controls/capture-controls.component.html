@@ -1,0 +1,19 @@
+<div class="bar">
+  @if (torchAvailable()) {
+    <button
+      class="side-btn"
+      type="button"
+      [class.side-btn-active]="torchOn()"
+      (click)="toggleTorch.emit()"
+      aria-label="Вспышка"
+    >
+      ⚡
+    </button>
+  } @else {
+    <span class="side-btn-spacer"></span>
+  }
+  <button class="shutter-btn" type="button" (click)="shutter.emit()" aria-label="Сделать фото">
+    <span class="shutter-inner"></span>
+  </button>
+  <button class="side-btn" type="button" (click)="help.emit()" aria-label="Информация">?</button>
+</div>

@@ -1,0 +1,13 @@
+<div class="bar">
+  <div class="timer" [class.timer-low]="isLowTime()">
+    <span class="dot"></span>
+    {{ remainingSeconds() | formatCountdown }}
+  </div>
+  <button class="close-btn" type="button" (click)="close.emit()" aria-label="Прервать осмотр">✕</button>
+</div>
+<div class="title-row">
+  <span class="step-label">Шаг {{ stepNumber() }} из {{ totalSteps() }}. {{ title() }}</span>
+  @if (helpAvailable()) {
+    <button class="help-btn" type="button" (click)="help.emit()" aria-label="Подсказка">?</button>
+  }
+</div>

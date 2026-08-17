@@ -1,0 +1,74 @@
+<div class="page">
+  @if (!installPrompt.isStandalone && (canPromptInstall() || installPrompt.isIos)) {
+    <button class="install-banner" type="button" (click)="requestInstall()">
+      <span>Установить приложение на телефон</span>
+      <span class="install-banner-arrow">→</span>
+    </button>
+  }
+
+  <div class="card">
+    <h1 class="title">Осмотр автомобиля</h1>
+    <p class="subtitle">Автомобиль должен быть чистым, а освещение — ярким</p>
+
+    @if (deadlineDate(); as deadline) {
+      <div class="deadline">Выполните осмотр до {{ deadline | date: 'dd.MM.yyyy' }}</div>
+    }
+
+    @if (vehicle(); as vehicle) {
+      <div class="vehicle-row">
+        <span class="vehicle-icon">🚗</span>
+        <div>
+          <div class="vehicle-name">{{ vehicle.make }} {{ vehicle.model }}, {{ vehicle.year }}</div>
+          <div class="vehicle-plate">{{ vehicle.plate }}</div>
+        </div>
+      </div>
+    }
+
+    <div class="photos-block">
+      <h2 class="photos-title">Фото автомобиля</h2>
+      <p class="photos-caption">Необходимо сделать {{ totalPhotos }} фото автомобиля</p>
+      <div class="checklist">
+        @for (item of checklist; track item.label) {
+          <div class="checklist-item">
+            <span class="checklist-count">{{ item.count }} фото</span>
+            <span class="checklist-label">{{ item.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <p class="setup-caption">Настройте телефон перед осмотром</p>
+    <button class="link-btn" type="button" (click)="showSetupHint.set(true)">Как настроить телефон ⬇</button>
+
+    <div class="timer-note">
+      <span class="timer-note-icon">⏱</span>
+      <div>
+        <div class="timer-note-title">Время осмотра ограничено: 15 мин.</div>
+        <div class="timer-note-caption">
+          Таймер запустится при переходе по кнопке. Если времени не хватит или вы прервётесь, будет необходимо
+          повторить осмотр
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" type="button" [disabled]="!vehicle()" (click)="startInspection()">
+      Начать осмотр
+    </button>
+  </div>
+</div>
+
+@if (showSetupHint()) {
+  <app-info-modal
+    title="Как настроить телефон"
+    description="Отключите автоблокировку экрана, разрешите доступ к камере и выберите хорошо освещённое место — так снимки получатся чёткими с первого раза."
+    (close)="showSetupHint.set(false)"
+  />
+}
+
+@if (showIosInstallHint()) {
+  <app-info-modal
+    title="Установка на iPhone"
+    description="Нажмите «Поделиться» в панели браузера, затем выберите «На экран «Домой»»."
+    (close)="showIosInstallHint.set(false)"
+  />
+}

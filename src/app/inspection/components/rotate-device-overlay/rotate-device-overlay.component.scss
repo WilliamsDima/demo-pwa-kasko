@@ -1,0 +1,57 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: block;
+}
+
+.wrap {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  padding: 32px;
+  background: var(--color-overlay-strong);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 8px;
+  animation: spin 2.2s ease-in-out infinite;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0;
+  max-width: 260px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.4;
+}
+
+@keyframes spin {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-90deg);
+  }
+}

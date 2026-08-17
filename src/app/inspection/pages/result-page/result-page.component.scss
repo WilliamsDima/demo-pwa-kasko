@@ -1,0 +1,109 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: var(--color-surface-muted);
+  padding: calc(20px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
+}
+
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: -8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.deadline {
+  background: #fff4e5;
+  color: #b96b00;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vehicle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+
+.vehicle-icon {
+  font-size: 22px;
+}
+
+.vehicle-name {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.vehicle-plate {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.act-caption {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.act-btn {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-tint);
+}
+
+.confirmed-banner {
+  background: var(--color-primary-tint);
+  color: var(--color-primary-dark);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}

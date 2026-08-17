@@ -1,0 +1,52 @@
+:host {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: block;
+  background: #000000;
+}
+
+.wrap {
+  position: relative;
+  height: 100%;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.actions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 40px calc(28px + var(--safe-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.action-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-retake {
+  background: var(--color-danger);
+}
+
+.action-confirm {
+  background: var(--color-primary);
+}
