@@ -1,6 +1,7 @@
 # Осмотр авто — демо
 
 Репозиторий: https://github.com/WilliamsDima/demo-pwa-kasko
+Демо (GitHub Pages): https://williamsdima.github.io/demo-pwa-kasko/
 
 Мобильное PWA-приложение для фотоосмотра авто перед оформлением страховки. 8 шагов съёмки через камеру браузера → отправка → результат с актом осмотра.
 
