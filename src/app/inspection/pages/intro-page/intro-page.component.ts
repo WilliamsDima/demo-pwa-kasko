@@ -8,6 +8,7 @@ import { INSPECTION_STEPS, STEP_CATEGORY_LABELS } from '../../../core/inspection
 import { StepCategory } from '../../../core/models/inspection-step.model';
 import { InspectionFacade } from '../../state/inspection.facade';
 import { InfoModalComponent } from '../../components/info-modal/info-modal.component';
+import { BUILD_INFO } from '../../../core/build-info';
 
 interface ChecklistItem {
   readonly label: string;
@@ -29,6 +30,8 @@ export class IntroPageComponent {
 
   protected readonly totalPhotos = INSPECTION_STEPS.length;
   protected readonly checklist: readonly ChecklistItem[] = this.buildChecklist();
+  protected readonly buildCommit = BUILD_INFO.commit;
+  protected readonly buildDate = new Date(BUILD_INFO.builtAt);
 
   protected readonly vehicle = toSignal(this.vehicleService.getCurrentInspectionVehicle(), {
     initialValue: null,

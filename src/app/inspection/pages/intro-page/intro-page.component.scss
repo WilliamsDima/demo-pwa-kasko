@@ -12,6 +12,13 @@
   gap: 12px;
 }
 
+.version-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  padding: 4px 0 0;
+}
+
 .install-banner {
   display: flex;
   align-items: center;

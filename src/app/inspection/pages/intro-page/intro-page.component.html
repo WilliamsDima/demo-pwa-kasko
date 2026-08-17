@@ -55,6 +55,8 @@
       Начать осмотр
     </button>
   </div>
+
+  <div class="version-footer">версия {{ buildCommit }} · {{ buildDate | date: 'dd.MM.yyyy HH:mm' }}</div>
 </div>
 
 @if (showSetupHint()) {
