@@ -32,8 +32,8 @@
       }
     </app-camera-viewport>
 
-    @if (showRotateOverlay()) {
-      <app-rotate-device-overlay (dismiss)="rotateOverlayDismissed.set(true)" />
+    @if (showRotateHint()) {
+      <app-rotate-device-overlay (dismiss)="rotateHintDismissed.set(true)" />
     }
 
     @if (captureErrorVisible()) {

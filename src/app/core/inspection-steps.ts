@@ -6,7 +6,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 1,
     title: 'Фото VIN',
     category: 'vin',
-    requiredOrientation: 'portrait',
     hint: {
       title: 'Где найти VIN',
       description:
@@ -18,7 +17,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 2,
     title: 'Лобовое стекло',
     category: 'windshield',
-    requiredOrientation: 'portrait',
     hint: {
       title: 'Как сфотографировать лобовое стекло',
       description: 'Сфотографируйте лобовое стекло целиком, стоя перед автомобилем',
@@ -29,7 +27,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 3,
     title: 'Логотип на лобовом стекле',
     category: 'windshield',
-    requiredOrientation: 'portrait',
     hint: {
       title: 'Логотип на лобовом стекле',
       description: 'Сделайте чёткое фото логотипа или наклейки производителя на лобовом стекле',
@@ -40,7 +37,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 4,
     title: 'Авто спереди слева',
     category: 'exterior',
-    requiredOrientation: 'landscape',
     hint: {
       title: 'Как сделать нужный ракурс',
       description: 'Автомобиль должен полностью попасть в кадр, включая передний бампер и госномер',
@@ -51,7 +47,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 5,
     title: 'Авто спереди справа',
     category: 'exterior',
-    requiredOrientation: 'landscape',
     hint: {
       title: 'Как сделать нужный ракурс',
       description: 'Автомобиль должен полностью попасть в кадр, включая передний бампер и госномер',
@@ -62,7 +57,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 6,
     title: 'Авто сзади справа',
     category: 'exterior',
-    requiredOrientation: 'landscape',
     hint: {
       title: 'Как сделать нужный ракурс',
       description: 'Автомобиль должен полностью попасть в кадр, включая задний бампер и госномер',
@@ -73,7 +67,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 7,
     title: 'Авто сзади слева',
     category: 'exterior',
-    requiredOrientation: 'landscape',
     hint: {
       title: 'Как сделать нужный ракурс',
       description: 'Автомобиль должен полностью попасть в кадр, включая задний бампер и госномер',
@@ -84,7 +77,6 @@ export const INSPECTION_STEPS: readonly StepConfig[] = [
     order: 8,
     title: 'Пробег авто',
     category: 'odometer',
-    requiredOrientation: 'portrait',
     hint: {
       title: 'Пробег автомобиля',
       description: 'Сфотографируйте приборную панель так, чтобы значение пробега было чётко видно',

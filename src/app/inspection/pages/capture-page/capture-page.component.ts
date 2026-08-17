@@ -56,37 +56,27 @@ export class CapturePageComponent {
   protected readonly exitConfirmVisible = signal(false);
   protected readonly hintVisible = signal(false);
   protected readonly captureErrorVisible = signal(false);
-  protected readonly rotateOverlayDismissed = signal(false);
+  protected readonly rotateHintDismissed = signal(false);
 
   protected readonly showCamera = computed(
     () => this.facade.cameraStatus() === 'granted' && !this.facade.allRequiredCaptured(),
   );
 
-  // Driven purely by the phone's *current* physical orientation, not by the step —
-  // the guide frame must only change shape when the phone is actually rotated,
-  // never as a side effect of moving to a step that wants a different orientation.
+  // Driven purely by the phone's *current* physical orientation — the guide frame is
+  // just a live preview of what you'll get, not a per-step requirement anymore.
   protected readonly guideAspectRatio = computed(() =>
     this.orientation() === 'landscape' ? LANDSCAPE_GUIDE_RATIO : PORTRAIT_GUIDE_RATIO,
   );
 
-  // Memoized by value (not by step object reference), so this only flips when the
-  // *required* orientation actually changes between consecutive steps — several
-  // steps in a row can share e.g. "landscape" without re-arming the hint.
-  protected readonly requiredStepOrientation = computed(
-    () => this.facade.currentStepConfig()?.requiredOrientation ?? null,
-  );
-
-  protected readonly orientationSatisfied = computed(() => {
-    const required = this.requiredStepOrientation();
-    return required === null || required === this.orientation();
-  });
-
-  protected readonly showRotateOverlay = computed(
+  // Every step can be shot in either orientation — it's the user's call. The rotate
+  // hint is just a one-time "did you know" tip shown on the very first step, not a
+  // reaction to any per-step mismatch.
+  protected readonly showRotateHint = computed(
     () =>
       this.showCamera() &&
       !this.facade.pendingPhoto() &&
-      !this.orientationSatisfied() &&
-      !this.rotateOverlayDismissed(),
+      this.facade.currentStepIndex() === 0 &&
+      !this.rotateHintDismissed(),
   );
 
   protected readonly timeoutVariant = computed<'complete' | 'incomplete'>(() =>
@@ -98,18 +88,17 @@ export class CapturePageComponent {
     return phase === 'uploading' || phase === 'assessing' || phase === 'finalizing';
   });
 
+  private readonly initialOrientation = this.orientation();
+
   constructor() {
     this.facade.requestCameraAccess();
     inject(DestroyRef).onDestroy(() => this.cameraService.stop());
 
+    // Also dismiss the one-time hint the moment the user actually rotates the
+    // phone — they clearly got the idea, no need to keep it around after that.
     effect(() => {
-      this.requiredStepOrientation();
-      this.rotateOverlayDismissed.set(false);
-    });
-
-    effect(() => {
-      if (this.orientationSatisfied()) {
-        this.rotateOverlayDismissed.set(true);
+      if (this.orientation() !== this.initialOrientation) {
+        this.rotateHintDismissed.set(true);
       }
     });
 

@@ -22,6 +22,5 @@ export interface StepConfig {
   readonly order: number;
   readonly title: string;
   readonly category: StepCategory;
-  readonly requiredOrientation: DeviceOrientation;
   readonly hint: StepHint;
 }
