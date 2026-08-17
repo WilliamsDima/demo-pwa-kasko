@@ -23,6 +23,5 @@ export interface StepConfig {
   readonly title: string;
   readonly category: StepCategory;
   readonly requiredOrientation: DeviceOrientation;
-  readonly guideAspectRatio: number;
   readonly hint: StepHint;
 }

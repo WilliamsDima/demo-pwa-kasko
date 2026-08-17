@@ -17,6 +17,9 @@ import { ConfirmActionModalComponent } from '../../components/confirm-action-mod
 import { UploadProgressPageComponent } from '../../components/upload-progress-page/upload-progress-page.component';
 import { ErrorPanelComponent } from '../../components/error-panel/error-panel.component';
 
+const PORTRAIT_GUIDE_RATIO = 3 / 4;
+const LANDSCAPE_GUIDE_RATIO = 4 / 3;
+
 @Component({
   selector: 'app-capture-page',
   imports: [
@@ -57,6 +60,13 @@ export class CapturePageComponent {
 
   protected readonly showCamera = computed(
     () => this.facade.cameraStatus() === 'granted' && !this.facade.allRequiredCaptured(),
+  );
+
+  // Driven purely by the phone's *current* physical orientation, not by the step —
+  // the guide frame must only change shape when the phone is actually rotated,
+  // never as a side effect of moving to a step that wants a different orientation.
+  protected readonly guideAspectRatio = computed(() =>
+    this.orientation() === 'landscape' ? LANDSCAPE_GUIDE_RATIO : PORTRAIT_GUIDE_RATIO,
   );
 
   // Memoized by value (not by step object reference), so this only flips when the

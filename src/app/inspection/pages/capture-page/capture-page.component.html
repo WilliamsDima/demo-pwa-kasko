@@ -3,7 +3,7 @@
     <app-camera-viewport
       #cameraViewport
       [stream]="cameraStream()"
-      [guideAspectRatio]="facade.currentStepConfig()?.guideAspectRatio ?? 1"
+      [guideAspectRatio]="guideAspectRatio()"
     >
       <app-step-header
         [stepNumber]="facade.currentStepIndex() + 1"
@@ -72,7 +72,7 @@
       </div>
       <div class="summary-actions">
         <button class="btn btn-primary" type="button" (click)="facade.submit()">Отправить</button>
-        <button class="btn btn-secondary" type="button" (click)="onRestartFlow()">Начать сначала</button>
+        <button class="btn btn-secondary" type="button" (click)="exitConfirmVisible.set(true)">Начать сначала</button>
       </div>
     </div>
   }
