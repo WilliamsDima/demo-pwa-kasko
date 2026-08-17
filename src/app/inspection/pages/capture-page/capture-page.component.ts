@@ -59,16 +59,25 @@ export class CapturePageComponent {
     () => this.facade.cameraStatus() === 'granted' && !this.facade.allRequiredCaptured(),
   );
 
-  protected readonly showRotateOverlay = computed(() => {
-    const stepConfig = this.facade.currentStepConfig();
-    return (
+  // Memoized by value (not by step object reference), so this only flips when the
+  // *required* orientation actually changes between consecutive steps — several
+  // steps in a row can share e.g. "landscape" without re-arming the hint.
+  protected readonly requiredStepOrientation = computed(
+    () => this.facade.currentStepConfig()?.requiredOrientation ?? null,
+  );
+
+  protected readonly orientationSatisfied = computed(() => {
+    const required = this.requiredStepOrientation();
+    return required === null || required === this.orientation();
+  });
+
+  protected readonly showRotateOverlay = computed(
+    () =>
       this.showCamera() &&
       !this.facade.pendingPhoto() &&
-      stepConfig !== null &&
-      stepConfig.requiredOrientation !== this.orientation() &&
-      !this.rotateOverlayDismissed()
-    );
-  });
+      !this.orientationSatisfied() &&
+      !this.rotateOverlayDismissed(),
+  );
 
   protected readonly timeoutVariant = computed<'complete' | 'incomplete'>(() =>
     this.facade.allRequiredCaptured() ? 'complete' : 'incomplete',
@@ -84,8 +93,14 @@ export class CapturePageComponent {
     inject(DestroyRef).onDestroy(() => this.cameraService.stop());
 
     effect(() => {
-      this.facade.currentStepIndex();
+      this.requiredStepOrientation();
       this.rotateOverlayDismissed.set(false);
+    });
+
+    effect(() => {
+      if (this.orientationSatisfied()) {
+        this.rotateOverlayDismissed.set(true);
+      }
     });
 
     effect(() => {
