@@ -37,6 +37,61 @@ export class HttpInspectionUploadService implements InspectionUploadService {
       );
   }
 
+  private mockUpload(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): Observable<UploadEvent> {
+    return new Observable<UploadEvent>((subscriber) => {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 20;
+        if (progress < 100) {
+          subscriber.next({
+            phase: 'uploading',  // тип: 'uploading' | 'assessing' | 'finalizing'
+            progress: progress
+          });
+        } else {
+          clearInterval(interval);
+          
+          // Симулируем этап оценки
+          setTimeout(() => {
+            subscriber.next({
+              phase: 'assessing',
+              progress: 50
+            });
+          }, 500);
+          
+          setTimeout(() => {
+            subscriber.next({
+              phase: 'assessing',
+              progress: 100
+            });
+          }, 1000);
+          
+          setTimeout(() => {
+            subscriber.next({
+              phase: 'finalizing',
+              progress: 50
+            });
+          }, 1500);
+          
+          setTimeout(() => {
+            subscriber.next({
+              phase: 'finalizing',
+              progress: 100
+            });
+          }, 2000);
+          
+          // Успешное завершение
+          setTimeout(() => {
+            subscriber.next({
+              phase: 'success',
+              reportId: `mock-report-${Date.now()}`
+            });
+            subscriber.complete();
+          }, 2500);
+        }
+      }, 300);
+    });
+  }
+
   private buildFormData(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): FormData {
     const formData = new FormData();
     formData.append('vehicle', JSON.stringify(vehicle));
