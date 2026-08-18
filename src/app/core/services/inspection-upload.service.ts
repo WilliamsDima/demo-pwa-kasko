@@ -1,9 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpEventType, HttpProgressEvent } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEventType,
+  HttpProgressEvent,
+} from '@angular/common/http';
 import { Observable, of, concat, delay, catchError, concatMap } from 'rxjs';
 import { CapturedPhoto } from '../models/capture-photo.model';
 import { VehicleInfo } from '../models/vehicle.model';
-import { UploadErrorEvent, UploadEvent, UploadProgressEvent, UploadSuccessEvent } from '../models/upload.model';
+import {
+  UploadErrorEvent,
+  UploadEvent,
+  UploadProgressEvent,
+  UploadSuccessEvent,
+} from '../models/upload.model';
 import { UPLOAD_ENDPOINT } from '../tokens/upload-endpoint.token';
 
 const UPLOAD_PHASE_MAX_PROGRESS = 70;
@@ -11,6 +21,10 @@ const UPLOAD_PHASE_MAX_PROGRESS = 70;
 @Injectable()
 export abstract class InspectionUploadService {
   abstract upload(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): Observable<UploadEvent>;
+  abstract mockUpload(
+    photos: readonly CapturedPhoto[],
+    vehicle: VehicleInfo
+  ): Observable<UploadEvent>;
 }
 
 @Injectable()
@@ -33,57 +47,57 @@ export class HttpInspectionUploadService implements InspectionUploadService {
           }
           return of();
         }),
-        catchError((error: unknown) => this.toErrorEvent(error)),
+        catchError((error: unknown) => this.toErrorEvent(error))
       );
   }
 
-  private mockUpload(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): Observable<UploadEvent> {
+  mockUpload(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): Observable<UploadEvent> {
     return new Observable<UploadEvent>((subscriber) => {
       let progress = 0;
       const interval = setInterval(() => {
         progress += 20;
         if (progress < 100) {
           subscriber.next({
-            phase: 'uploading',  // тип: 'uploading' | 'assessing' | 'finalizing'
-            progress: progress
+            phase: 'uploading', // тип: 'uploading' | 'assessing' | 'finalizing'
+            progress: progress,
           });
         } else {
           clearInterval(interval);
-          
+
           // Симулируем этап оценки
           setTimeout(() => {
             subscriber.next({
               phase: 'assessing',
-              progress: 50
+              progress: 50,
             });
           }, 500);
-          
+
           setTimeout(() => {
             subscriber.next({
               phase: 'assessing',
-              progress: 100
+              progress: 100,
             });
           }, 1000);
-          
+
           setTimeout(() => {
             subscriber.next({
               phase: 'finalizing',
-              progress: 50
+              progress: 50,
             });
           }, 1500);
-          
+
           setTimeout(() => {
             subscriber.next({
               phase: 'finalizing',
-              progress: 100
+              progress: 100,
             });
           }, 2000);
-          
+
           // Успешное завершение
           setTimeout(() => {
             subscriber.next({
               phase: 'success',
-              reportId: `mock-report-${Date.now()}`
+              reportId: `mock-report-${Date.now()}`,
             });
             subscriber.complete();
           }, 2500);
@@ -121,7 +135,7 @@ export class HttpInspectionUploadService implements InspectionUploadService {
     return concat(
       ...assessingProgress.map((step) => of(step).pipe(delay(450))),
       ...finalizingProgress.map((step) => of(step).pipe(delay(300))),
-      of(success).pipe(delay(300)),
+      of(success).pipe(delay(300))
     );
   }
 
