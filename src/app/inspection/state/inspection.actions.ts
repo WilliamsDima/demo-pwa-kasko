@@ -49,7 +49,7 @@ export const connectivityActions = createActionGroup({
 export const submissionActions = createActionGroup({
   source: 'Inspection/Submission',
   events: {
-    'Submit Requested': emptyProps(),
+    'Submit Requested': props<{ isMock?: boolean }>(),
     'Event Received': props<{ event: UploadEvent }>(),
     'Report Acknowledged Toggled': props<{ acknowledged: boolean }>(),
   },
