@@ -37,6 +37,47 @@ export class HttpInspectionUploadService implements InspectionUploadService {
       );
   }
 
+  private mockUpload(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): Observable<UploadEvent> {
+    return new Observable((subscriber) => {
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 20;
+        if (progress < 100) {
+          subscriber.next({
+            type: 'progress',
+            progress: progress,
+            message: `Uploading... ${progress}%`
+          });
+        } else {
+          clearInterval(interval);
+          // Симулируем этапы оценки
+          subscriber.next({
+            type: 'progress',
+            progress: 100,
+            message: 'Upload complete'
+          });
+          
+          setTimeout(() => {
+            subscriber.next({
+              type: 'stage',
+              stage: 'assessment',
+              message: 'Assessing photos...'
+            });
+          }, 500);
+          
+          setTimeout(() => {
+            subscriber.next({
+              type: 'stage',
+              stage: 'complete',
+              message: 'Assessment complete!'
+            });
+            subscriber.complete();
+          }, 1500);
+        }
+      }, 300);
+    });
+  }
+
   private buildFormData(photos: readonly CapturedPhoto[], vehicle: VehicleInfo): FormData {
     const formData = new FormData();
     formData.append('vehicle', JSON.stringify(vehicle));
