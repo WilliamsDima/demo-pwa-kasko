@@ -1,141 +1,133 @@
 <div class="stage">
   @if (showCamera()) {
-    <app-camera-viewport
-      #cameraViewport
-      [stream]="cameraStream()"
-      [guideAspectRatio]="guideAspectRatio()"
-    >
-      <app-step-header
-        [stepNumber]="facade.currentStepIndex() + 1"
-        [totalSteps]="totalSteps"
-        [title]="facade.currentStepConfig()?.title ?? ''"
-        [remainingSeconds]="facade.remainingSeconds()"
-        [helpAvailable]="true"
-        (close)="exitConfirmVisible.set(true)"
-        (help)="hintVisible.set(true)"
-      />
-      <app-photo-thumbnails [photos]="facade.capturedPhotos()" />
-      @if (facade.pendingPhoto(); as pendingPhoto) {
-        <app-photo-review
-          [photoDataUrl]="pendingPhoto.dataUrl"
-          (retake)="facade.retakePhoto()"
-          (confirm)="facade.confirmPhoto()"
-        />
-      } @else {
-        <app-capture-controls
-          [torchAvailable]="torchAvailable()"
-          [torchOn]="facade.torchOn()"
-          (shutter)="onShutter()"
-          (toggleTorch)="onToggleTorch()"
-          (help)="hintVisible.set(true)"
-        />
-      }
-    </app-camera-viewport>
-
-    @if (showRotateHint()) {
-      <app-rotate-device-overlay (dismiss)="rotateHintDismissed.set(true)" />
-    }
-
-    @if (captureErrorVisible()) {
-      <app-confirm-action-modal
-        title="Что-то не загрузилось"
-        description="Пожалуйста попробуйте снова"
-        primaryLabel="Попробовать снова"
-        icon="danger"
-        [showCloseButton]="false"
-        (primary)="captureErrorVisible.set(false)"
-      />
-    }
-  }
-
-  @if (facade.cameraStatus() === 'denied' || facade.cameraStatus() === 'unavailable') {
-    <app-permission-denied-panel
-      [reason]="facade.cameraError()?.reason ?? 'permission-denied'"
-      (retry)="facade.requestCameraAccess()"
+  <app-camera-viewport
+    #cameraViewport
+    [stream]="cameraStream()"
+    [guideAspectRatio]="guideAspectRatio()"
+  >
+    <app-step-header
+      [stepNumber]="facade.currentStepIndex() + 1"
+      [totalSteps]="totalSteps"
+      [title]="facade.currentStepConfig()?.title ?? ''"
+      [remainingSeconds]="facade.remainingSeconds()"
+      [helpAvailable]="true"
       (close)="exitConfirmVisible.set(true)"
+      (help)="hintVisible.set(true)"
     />
-  }
+    <app-photo-thumbnails [photos]="facade.capturedPhotos()" />
+    @if (facade.pendingPhoto(); as pendingPhoto) {
+    <app-photo-review
+      [photoDataUrl]="pendingPhoto.dataUrl"
+      (retake)="facade.retakePhoto()"
+      (confirm)="facade.confirmPhoto()"
+    />
+    } @else {
+    <app-capture-controls
+      [torchAvailable]="torchAvailable()"
+      [torchOn]="facade.torchOn()"
+      (shutter)="onShutter()"
+      (toggleTorch)="onToggleTorch()"
+      (help)="hintVisible.set(true)"
+    />
+    }
+  </app-camera-viewport>
 
-  @if (facade.allRequiredCaptured() && facade.submission().phase === 'idle') {
-    <div class="summary">
-      <button class="close-btn" type="button" (click)="exitConfirmVisible.set(true)" aria-label="Прервать осмотр">
-        ✕
-      </button>
-      <h1 class="summary-title">Все фото готовы</h1>
-      <p class="summary-subtitle">Проверьте снимки перед отправкой на проверку</p>
-      <div class="summary-grid">
-        @for (photo of facade.capturedPhotos(); track $index) {
-          @if (photo) {
-            <img class="summary-photo" [src]="photo.dataUrl" alt="" />
-          }
-        }
-      </div>
-      <div class="summary-actions">
-        <button class="btn btn-primary" type="button" (click)="facade.submit()">Отправить</button>
-        <button class="btn btn-secondary" type="button" (click)="exitConfirmVisible.set(true)">Начать сначала</button>
-      </div>
+  @if (showRotateHint()) {
+  <app-rotate-device-overlay (dismiss)="rotateHintDismissed.set(true)" />
+  } @if (captureErrorVisible()) {
+  <app-confirm-action-modal
+    title="Что-то не загрузилось"
+    description="Пожалуйста попробуйте снова"
+    primaryLabel="Попробовать снова"
+    icon="danger"
+    [showCloseButton]="false"
+    (primary)="captureErrorVisible.set(false)"
+  />
+  } } @if (facade.cameraStatus() === 'denied' || facade.cameraStatus() === 'unavailable') {
+  <app-permission-denied-panel
+    [reason]="facade.cameraError()?.reason ?? 'permission-denied'"
+    (retry)="facade.requestCameraAccess()"
+    (close)="exitConfirmVisible.set(true)"
+  />
+  } @if (facade.allRequiredCaptured() && facade.submission().phase === 'idle') {
+  <div class="summary">
+    <button
+      class="close-btn"
+      type="button"
+      (click)="exitConfirmVisible.set(true)"
+      aria-label="Прервать осмотр"
+    >
+      ✕
+    </button>
+    <h1 class="summary-title">Все фото готовы</h1>
+    <p class="summary-subtitle">Проверьте снимки перед отправкой на проверку</p>
+    <div class="summary-grid">
+      @for (photo of facade.capturedPhotos(); track $index) { @if (photo) {
+      <img class="summary-photo" [src]="photo.dataUrl" alt="" />
+      } }
     </div>
+    <div class="summary-actions">
+      <button class="btn btn-primary" type="button" (click)="facade.submit()">Отправить</button>
+      <button class="btn btn-primary" type="button" (click)="facade.submit()">
+        Отправить mock
+      </button>
+      <button class="btn btn-secondary" type="button" (click)="exitConfirmVisible.set(true)">
+        Начать сначала
+      </button>
+    </div>
+  </div>
   }
 </div>
 
 @if (showUploadProgress()) {
-  <app-upload-progress-page [phase]="facade.submission().phase" [progress]="facade.submission().progress" />
+<app-upload-progress-page
+  [phase]="facade.submission().phase"
+  [progress]="facade.submission().progress"
+/>
 } @else if (facade.submission().phase === 'error') {
-  <app-error-panel (report)="onReportProblem()" (restart)="onRestartFlow()" />
-}
-
-@if (!facade.online()) {
-  <app-confirm-action-modal
-    title="Нет соединения"
-    description="Пожалуйста проверьте ваше соединение с интернетом и попробуйте снова"
-    primaryLabel="Попробовать снова"
-    icon="warning"
-    [showCloseButton]="false"
-  />
-}
-
-@if (facade.status() === 'expired') {
-  @if (timeoutVariant() === 'complete') {
-    <app-confirm-action-modal
-      title="Время осмотра истекло"
-      description="Вы сделали все обязательные фото автомобиля. Можете отправить фото на проверку или начать осмотр заново"
-      primaryLabel="Отправить фото"
-      secondaryLabel="Начать осмотр заново"
-      [showCloseButton]="false"
-      (primary)="facade.submit()"
-      (secondary)="onRestartFlow()"
-    />
-  } @else {
-    <app-confirm-action-modal
-      title="Время осмотра истекло"
-      description="Необходимо начать осмотр заново. По истечению времени осмотра сделанные фото не сохраняются"
-      primaryLabel="Начать осмотр заново"
-      secondaryLabel="Завершить"
-      [showCloseButton]="false"
-      (primary)="onRestartFlow()"
-      (secondary)="onRestartFlow()"
-    />
-  }
-}
-
-@if (exitConfirmVisible()) {
-  <app-confirm-action-modal
-    title="Фото будут удалены, если вы прервёте осмотр"
-    description="Необходимо будет начать осмотр заново"
-    primaryLabel="Вернуться к осмотру"
-    secondaryLabel="Закрыть без сохранения"
-    [showCloseButton]="false"
-    (primary)="exitConfirmVisible.set(false)"
-    (secondary)="onRestartFlow()"
-  />
-}
-
-@if (hintVisible()) {
-  @if (facade.currentStepConfig(); as stepConfig) {
-    <app-info-modal
-      [title]="stepConfig.hint.title"
-      [description]="stepConfig.hint.description"
-      (close)="hintVisible.set(false)"
-    />
-  }
-}
+<app-error-panel (report)="onReportProblem()" (restart)="onRestartFlow()" />
+} @if (!facade.online()) {
+<app-confirm-action-modal
+  title="Нет соединения"
+  description="Пожалуйста проверьте ваше соединение с интернетом и попробуйте снова"
+  primaryLabel="Попробовать снова"
+  icon="warning"
+  [showCloseButton]="false"
+/>
+} @if (facade.status() === 'expired') { @if (timeoutVariant() === 'complete') {
+<app-confirm-action-modal
+  title="Время осмотра истекло"
+  description="Вы сделали все обязательные фото автомобиля. Можете отправить фото на проверку или начать осмотр заново"
+  primaryLabel="Отправить фото"
+  secondaryLabel="Начать осмотр заново"
+  [showCloseButton]="false"
+  (primary)="facade.submit()"
+  (secondary)="onRestartFlow()"
+/>
+} @else {
+<app-confirm-action-modal
+  title="Время осмотра истекло"
+  description="Необходимо начать осмотр заново. По истечению времени осмотра сделанные фото не сохраняются"
+  primaryLabel="Начать осмотр заново"
+  secondaryLabel="Завершить"
+  [showCloseButton]="false"
+  (primary)="onRestartFlow()"
+  (secondary)="onRestartFlow()"
+/>
+} } @if (exitConfirmVisible()) {
+<app-confirm-action-modal
+  title="Фото будут удалены, если вы прервёте осмотр"
+  description="Необходимо будет начать осмотр заново"
+  primaryLabel="Вернуться к осмотру"
+  secondaryLabel="Закрыть без сохранения"
+  [showCloseButton]="false"
+  (primary)="exitConfirmVisible.set(false)"
+  (secondary)="onRestartFlow()"
+/>
+} @if (hintVisible()) { @if (facade.currentStepConfig(); as stepConfig) {
+<app-info-modal
+  [title]="stepConfig.hint.title"
+  [description]="stepConfig.hint.description"
+  (close)="hintVisible.set(false)"
+/>
+} }
